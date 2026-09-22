@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sofia Sanchez — Fotógrafa de eventos</title>
+<meta name="description" content="Fotógrafa de eventos en La Plata: casamientos, cumpleaños, festivales y coberturas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,900;1,9..144,500;1,9..144,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3EDE3;
+    --paper-deep:#E6DAC4;
+    --ink:#171412;
+    --ink-soft:#5C554E;
+    --wine:#7C2233;
+    --wine-deep:#4E1420;
+    --film:#171412;
+    --ph-a:#DCD1BC;
+    --ph-b:#E9E1CF;
+    --maxw: 1180px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Serif 4', Georgia, serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+  h1,h2,h3{ font-family:'Fraunces', serif; }
+  .label, .logotype, nav a, .btn, .num, .subrow-label, footer, .frame figcaption{
+    font-family:'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  }
+  .script{ font-family:'Caveat', cursive; }
+  img{max-width:100%; display:block;}
+  a{color:inherit;}
+  ::selection{ background:var(--wine); color:var(--paper); }
+
+  /* ---------- Cursor personalizado ---------- */
+  @media(min-width:900px){
+    html, a, button, .photo{ cursor:none; }
+    .cursor-dot, .cursor-ring{
+      position:fixed; top:0; left:0; z-index:300; pointer-events:none;
+      transform:translate(-50%,-50%); border-radius:50%;
+    }
+    .cursor-dot{ width:6px; height:6px; background:var(--wine); }
+    .cursor-ring{
+      width:38px; height:38px; border:1px solid var(--wine);
+      transition:width .25s ease, height .25s ease, background .25s ease, border-color .25s ease;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .cursor-ring span{
+      opacity:0; font-family:'Archivo', sans-serif; font-size:.62rem; font-weight:700;
+      letter-spacing:.1em; color:var(--paper); transition:opacity .2s ease;
+    }
+    .cursor-ring.grow{ width:64px; height:64px; border-color:var(--wine); }
+    .cursor-ring.photo-hover{ width:78px; height:78px; background:var(--wine); border-color:var(--wine); }
+    .cursor-ring.photo-hover span{ opacity:1; }
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  section{padding:120px 0; position:relative;}
+  .bg-alt{background:var(--paper-deep);}
+
+  /* ---------- Grain overlay ---------- */
+  .grain{
+    position:fixed; inset:0; z-index:200; pointer-events:none; opacity:.05; mix-blend-mode:multiply;
+  }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.visible{opacity:1; transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1; transform:none; transition:none;}
+    html{scroll-behavior:auto;}
+    .filmstrip-track{animation:none !important;}
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    background:rgba(243,237,227,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(23,20,18,0.12);
+  }
+  nav{
+    max-width:var(--maxw); margin:0 auto; padding:18px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .logotype{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:700; font-size:1.3rem;
+    text-decoration:none; display:flex; align-items:center; gap:8px;
+  }
+  .logotype .dot{ width:7px; height:7px; border-radius:50%; background:var(--wine); display:inline-block; }
+  .nav-links{ display:flex; align-items:center; gap:30px; list-style:none; }
+  .nav-links a{
+    text-decoration:none; font-size:.8rem; font-weight:700; letter-spacing:.05em;
+    text-transform:uppercase; color:var(--ink-soft);
+    padding-bottom:4px; border-bottom:2px solid transparent;
+    transition:color .2s, border-color .2s;
+  }
+  .nav-links a:hover{ color:var(--wine); border-color:var(--wine); }
+  .nav-cta{
+    background:var(--wine); color:var(--paper) !important; padding:9px 18px; border-radius:2px;
+    text-transform:uppercase; font-size:.75rem; font-weight:700; letter-spacing:.05em; border-bottom:none !important;
+  }
+  .hamburger{ display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px;}
+  .hamburger span{width:24px; height:2px; background:var(--ink); display:block;}
+
+  @media(max-width:820px){
+    .nav-links{
+      position:fixed; top:64px; left:0; right:0; background:var(--paper);
+      flex-direction:column; align-items:flex-start; padding:24px 28px; gap:20px;
+      border-bottom:1px solid rgba(23,20,18,0.12);
+      transform:translateY(-140%); transition:transform .3s ease;
+    }
+    .nav-links.open{ transform:translateY(0); }
+    .hamburger{ display:flex; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height:100vh; display:flex; align-items:center;
+    padding-top:120px; padding-bottom:70px; overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid; grid-template-columns: 1.05fr 0.95fr; gap:50px; align-items:center; position:relative;
+  }
+  .side-label{
+    position:absolute; left:-6px; top:50%; transform:translateY(-50%) rotate(-90deg); transform-origin:left center;
+    font-family:'Archivo', sans-serif; font-size:.75rem; letter-spacing:.3em; text-transform:uppercase;
+    color:var(--ink-soft); white-space:nowrap; display:none;
+  }
+  @media(min-width:1000px){ .side-label{ display:block; } }
+
+  .eyebrow{
+    color:var(--wine); text-transform:uppercase; letter-spacing:.16em; font-size:.78rem; font-weight:700;
+    margin-bottom:18px; font-family:'Archivo', sans-serif;
+  }
+  .hero h1{
+    font-size:clamp(3.2rem, 8.6vw, 7.2rem); font-weight:900; line-height:0.92; letter-spacing:-.02em;
+    margin-left:-4px;
+  }
+  .hero h1 em{
+    display:block; font-style:italic; font-weight:500; color:var(--wine);
+    font-size:clamp(2.2rem, 5.6vw, 4.2rem); margin-top:4px; margin-left:.4em;
+  }
+  #heroPhoto{ transition:transform .05s linear; }
+  .hero p.lede{
+    margin-top:28px; font-size:1.18rem; color:var(--ink-soft); max-width:44ch;
+  }
+  .hero-actions{ display:flex; gap:14px; margin-top:36px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 26px; border-radius:2px; text-decoration:none;
+    font-size:.82rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+    border:1px solid var(--ink); transition:background .2s, color .2s, border-color .2s, transform .2s;
+  }
+  .btn-solid{ background:var(--wine); border-color:var(--wine); color:var(--paper); }
+  .btn-solid:hover{ background:var(--wine-deep); transform:translateY(-2px); }
+  .btn-outline{ background:transparent; color:var(--ink); }
+  .btn-outline:hover{ background:var(--ink); color:var(--paper); transform:translateY(-2px); }
+
+  .hero-photo-wrap{ position:relative; }
+  .hero-photo-wrap::after{
+    content:""; position:absolute; inset:18px -18px -18px 18px; border:1px solid var(--wine); z-index:-1;
+  }
+
+  /* ---------- Photo placeholders ---------- */
+  .photo{
+    position:relative; overflow:hidden; border-radius:1px;
+    aspect-ratio: var(--ar, 4/5);
+    background: repeating-linear-gradient(135deg, var(--ph-a) 0 14px, var(--ph-b) 14px 28px);
+    transition: aspect-ratio .3s ease;
+  }
+  .photo img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.2,.8,.2,1), filter .5s ease; filter:grayscale(.15) contrast(1.02); }
+  .photo:hover img{ transform:scale(1.06); filter:grayscale(0) contrast(1.05); }
+  .photo::before{
+    content:""; position:absolute; inset:0; background:var(--wine); mix-blend-mode:multiply;
+    opacity:0; transition:opacity .4s ease; z-index:2; pointer-events:none;
+  }
+  .photo:hover::before{ opacity:.14; }
+  .photo .photo-fallback{
+    position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:18px; gap:8px; color:var(--ink-soft);
+  }
+  .photo .photo-fallback .icon{ font-size:1.6rem; opacity:.6; }
+  .photo .photo-fallback strong{
+    font-family:'Archivo', sans-serif; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; color:var(--ink);
+  }
+
+  /* ---------- Section heading with watermark ---------- */
+  .section-head{ margin-bottom:52px; max-width:660px; position:relative; }
+  .watermark{
+    position:absolute; top:-78px; left:-16px; font-family:'Fraunces', serif; font-weight:900;
+    font-size:clamp(5rem, 14vw, 10rem); color:var(--ink); opacity:.05; line-height:1; z-index:0;
+    pointer-events:none; user-select:none; transform:rotate(-3deg);
+  }
+  .section-head .num{
+    position:relative; color:var(--wine); font-weight:700; font-size:.82rem;
+    letter-spacing:.14em; text-transform:uppercase; margin-bottom:12px; display:block; z-index:1;
+  }
+  .section-head h2{
+    position:relative; z-index:1; font-size:clamp(2.1rem, 4.2vw, 3rem); font-weight:600; font-style:italic; letter-spacing:-.01em;
+  }
+  .section-head p{ position:relative; z-index:1; margin-top:16px; color:var(--ink-soft); font-size:1.08rem; }
+
+  /* ---------- About ---------- */
+  .about .wrap{ display:grid; grid-template-columns:0.8fr 1.2fr; gap:64px; align-items:center; }
+  .about blockquote{
+    margin-top:40px; padding-left:0; border-left:none; position:relative;
+    font-family:'Caveat', cursive; font-size:clamp(2.6rem,5vw,3.6rem); color:var(--wine); font-weight:700;
+    line-height:1; transform:rotate(-1.5deg); max-width:14ch;
+  }
+  .about blockquote::before{
+    content:"“"; position:absolute; left:-.35em; top:.18em; font-family:'Fraunces', serif; font-style:italic;
+    font-size:2.4em; color:var(--wine); opacity:.25; z-index:-1;
+  }
+
+  /* ---------- Gallery grids ---------- */
+  .grid3{ display:grid; grid-template-columns:1.15fr 0.85fr 1fr; gap:22px; align-items:start; }
+  .grid3 > *:nth-child(1){ margin-top:0; }
+  .grid3 > *:nth-child(2){ margin-top:56px; }
+  .grid3 > *:nth-child(3){ margin-top:-26px; }
+  .grid3 .photo:hover{ transform:rotate(-.6deg); }
+  .grid3 .photo{ transition:transform .35s ease; }
+  @media(max-width:760px){
+    .grid3{ grid-template-columns:1fr; }
+    .grid3 > *{ margin-top:0 !important; }
+    .about .wrap, .hero .wrap{ grid-template-columns:1fr; }
+  }
+
+  .subrow{ margin-bottom:52px; }
+  .subrow:last-child{ margin-bottom:0; }
+  .subrow-label{
+    font-weight:700; text-transform:uppercase;
+    font-size:.82rem; letter-spacing:.08em; color:var(--wine); margin-bottom:16px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .subrow-label::after{ content:""; flex:1; height:1px; background:rgba(23,20,18,0.15); }
+
+  /* ---------- Filmstrip signature element ---------- */
+  .filmstrip{
+    position:relative; background:var(--film); overflow:hidden;
+    padding:14px 0; border-top:2px solid var(--wine); border-bottom:2px solid var(--wine);
+  }
+  .filmstrip::before, .filmstrip::after{
+    content:""; position:absolute; left:0; right:0; height:12px;
+    background-image: radial-gradient(circle, var(--paper) 2.6px, transparent 2.8px);
+    background-size:26px 12px; background-repeat:repeat-x; background-position:6px center;
+  }
+  .filmstrip::before{ top:0; }
+  .filmstrip::after{ bottom:0; }
+  .filmstrip-track{
+    display:flex; gap:10px; width:max-content;
+    animation: scrollFilm 40s linear infinite;
+    padding:0 5px;
+  }
+  .filmstrip:hover .filmstrip-track{ animation-play-state:paused; }
+  .frame{
+    width:130px; height:88px; flex:0 0 auto; position:relative;
+    border:1px solid rgba(243,237,227,0.25); background:#2A2521;
+  }
+  .frame img{ width:100%; height:100%; object-fit:cover; filter:grayscale(.4) contrast(1.05); opacity:.9; }
+  @keyframes scrollFilm{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+
+  /* ---------- Closing / contact ---------- */
+  .closing{ background:var(--ink); color:var(--paper); }
+  .closing .watermark{ color:var(--paper); opacity:.06; }
+  .closing .section-head h2{ color:var(--paper); }
+  .closing .section-head p{ color:#C9C4BC; }
+  .closing .grid-mosaic{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:56px;
+  }
+  .closing .photo{ --ph-a:#3A3532; --ph-b:#453F3B; }
+  .closing .photo .photo-fallback{ color:#B9B3AA; }
+  .closing .photo .photo-fallback strong{ color:#EDE9E2; }
+  @media(max-width:700px){ .closing .grid-mosaic{ grid-template-columns:repeat(2,1fr);} }
+
+  .contact-box{
+    display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:30px;
+    border-top:1px solid rgba(243,237,227,0.18); padding-top:36px;
+  }
+  .contact-links{ display:flex; flex-direction:column; gap:6px; font-size:.95rem; color:#D8D3CA;}
+  .contact-links a{ text-decoration:none; }
+  .contact-links a:hover{ color:#fff; }
+  .contact-actions{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn-whatsapp{ background:#25D366; border-color:#25D366; color:#0B1B12; }
+  .btn-whatsapp:hover{ background:#1fa553; transform:translateY(-2px);}
+
+  footer{
+    background:var(--ink); color:#93897E; text-align:center; padding:26px 0;
+    font-size:.78rem; letter-spacing:.03em;
+  }
+
+  /* floating buttons */
+  .floating-stack{
+    position:fixed; bottom:24px; right:24px; z-index:60;
+    display:flex; flex-direction:column; gap:12px; align-items:flex-end;
+  }
+  .floating-cta{
+    text-decoration:none; padding:14px 20px; border-radius:40px;
+    font-family:'Archivo',sans-serif; font-size:.8rem; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+    box-shadow:0 8px 24px rgba(0,0,0,.2); display:flex; align-items:center; gap:8px;
+    transition:transform .2s;
+  }
+  .floating-cta:hover{ transform:translateY(-2px) scale(1.02); }
+  .fc-whatsapp{ background:#25D366; color:#0B1B12; }
+  .fc-email{ background:var(--wine); color:var(--paper); }
+
+  /* ---------- Folio corrido ---------- */
+  .folio{
+    position:fixed; left:24px; bottom:24px; z-index:55;
+    font-family:'Archivo', sans-serif; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-soft); display:none; align-items:center; gap:10px;
+    mix-blend-mode:difference; filter:invert(1);
+  }
+  @media(min-width:900px){ .folio{ display:flex; } }
+  .folio .folio-line{ width:26px; height:1px; background:var(--ink-soft); }
+  .folio b{ color:var(--ink); font-weight:700; }
+
+  /* ---------- Stamp giratorio ---------- */
+  .stamp{
+    position:absolute; width:120px; height:120px; z-index:5; pointer-events:none;
+  }
+  .stamp svg{ width:100%; height:100%; animation:spinStamp 16s linear infinite; }
+  .stamp .stamp-center{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-style:italic; font-size:1.6rem; color:var(--wine);
+  }
+  @keyframes spinStamp{ from{ transform:rotate(0); } to{ transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<svg class="grain" xmlns="http://www.w3.org/2000/svg">
+  <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/></filter>
+  <rect width="100%" height="100%" filter="url(#noise)"/>
+</svg>
+
+<header>
+  <nav>
+    <a href="#inicio" class="logotype"><span class="dot"></span>Sofia Sanchez</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#quien-soy">Quién soy</a></li>
+      <li><a href="#casamientos">Casamientos</a></li>
+      <li><a href="#cumpleanos">Cumpleaños</a></li>
+      <li><a href="#festivales">Festivales</a></li>
+      <li><a href="#deportivos">Deportivos</a></li>
+      <li><a href="#artistico">Más trabajos</a></li>
+      <li><a href="#contacto" class="nav-cta">Hablemos</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="inicio" data-title="00 — Portfolio">
+  <div class="wrap">
+    <span class="side-label">Rollo Nº 01 — Portafolio 2026</span>
+    <div class="reveal">
+      <span class="eyebrow">Fotógrafa de eventos · La Plata</span>
+      <h1>Portfolio<em>Sofia Sanchez</em></h1>
+      <p class="lede">Casamientos, cumpleaños, festivales y diferentes coberturas. Capturo lo que pasa una sola vez, sin poses forzadas.</p>
+      <div class="hero-actions">
+        <a href="#contacto" class="btn btn-solid">Contratame</a>
+        <a href="https://instagram.com/sofis_photo" target="_blank" class="btn btn-outline">@sofis_photo</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap reveal" id="heroPhoto">
+      <div class="photo" style="--ar:4/5">
+        <img src="./fotos/f3.jpg" alt="Bailarina folklórica frente a la catedral de La Plata">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Foto de portada</strong></div>
+      </div>
+      <div class="stamp" style="top:-30px; left:-30px;">
+        <svg viewBox="0 0 100 100">
+          <defs><path id="stampPath" d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0"/></defs>
+          <text font-family="Archivo, sans-serif" font-size="8.2" font-weight="700" letter-spacing="2" fill="#7C2233">
+            <textPath href="#stampPath">SOFIA SANCHEZ·FOTÓGRAFA DE EVENTOS·</textPath>
+          </text>
+        </svg>
+        <div class="stamp-center">✷</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FILMSTRIP ============ -->
+<div class="filmstrip" aria-hidden="true">
+  <div class="filmstrip-track" id="filmTrack">
+    <div class="frame"><img src="fotos/f3.jpg" alt=""></div>
+    <div class="frame"><img src="fotos/c1.JPG" alt=""></div>
+    <div class="frame"><img src="fotos/c153.jpg" alt=""></div>
+    <div class="frame"><img src="fotos/d1.jpeg" alt=""></div>
+    <div class="frame"><img src="fotos/c3.JPG" alt=""></div>
+    <div class="frame"><img src="fotos/f5.jpg" alt=""></div>
+    <div class="frame"><img src="fotos/c42.JPG" alt=""></div>
+    <div class="frame"><img src="fotos/c2.JPG" alt=""></div>
+  </div>
+</div>
+
+<!-- ============ QUIÉN SOY ============ -->
+<section class="about bg-alt" id="quien-soy" data-title="00 — Quién soy">
+  <div class="wrap">
+    <div class="photo reveal" style="--ar:1/1">
+      <img src="fotos/yo.jpg" alt="Retrato de Sofia Sanchez">
+      <div class="photo-fallback"><span class="icon">🖼</span><strong>Foto de perfil</strong></div>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow">Quién soy</span>
+      <h2 style="font-size:2.3rem; font-weight:600; font-style:italic; margin-bottom:6px;">Mi nombre es Sofia</h2>
+      <p style="margin-top:16px; color:var(--ink-soft); font-size:1.08rem;">
+        La fotografía es mi forma de detener el tiempo. Desde hace varios años me dedico a capturar
+        momentos que merecen quedar grabados para siempre: gestos espontáneos, luces que no se repiten,
+        instantes que de otro modo se perderían.
+      </p>
+      <blockquote>Construyo imágenes desde lo simple</blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CASAMIENTOS ============ -->
+<section id="casamientos" data-title="01 — Casamientos">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="watermark">01</span>
+      <span class="num">01 — Casamientos</span>
+      <h2>Celebraciones</h2>
+      <p>Casamientos íntimos y civiles, capturando la emoción real sin poses forzadas.</p>
+    </div>
+    <div class="grid3 reveal">
+      <div class="photo" style="--ar:4/5">
+        <img src="fotos/c1.JPG" alt="Corte de torta en casamiento">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Corte de torta</strong></div>
+      </div>
+      <div class="photo" style="--ar:4/5">
+        <img src="fotos/c2.JPG" alt="Detalle de mesa de casamiento">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Detalle de mesa</strong></div>
+      </div>
+      <div class="photo" style="--ar:4/5">
+        <img src="fotos/c3.JPG" alt="Brindis de casamiento">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Brindis con arroz</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CUMPLEAÑOS ============ -->
+<section class="bg-alt" id="cumpleanos" data-title="02 — Cumpleaños">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="watermark">02</span>
+      <span class="num">02 — Cumpleaños</span>
+      <h2>Cada festejo, a su manera</h2>
+      <p>Fiestas de 15, cumpleaños familiares e infantiles: cada edad tiene su propia energía.</p>
+    </div>
+
+    <div class="subrow reveal">
+      <div class="subrow-label">Fiestas de 15</div>
+      <div class="grid3">
+        <div class="photo" style="--ar:4/5">
+          <img src="fotos/c153.jpg" alt="Torta de cumpleaños de 15">
+          <div class="photo-fallback"><span class="icon">🖼</span><strong>Torta con globos</strong></div>
+        </div>
+        <div class="photo" style="--ar:4/5">
+          <img src="fotos/c151.jpg" alt="Amigas abrazadas en fiesta de 15">
+          <div class="photo-fallback"><span class="icon">🖼</span><strong>Abrazo entre amigas</strong></div>
+        </div>
+        <div class="photo" style="--ar:4/5">
+          <img src="fotos/c154.jpg" alt="Familia en fiesta de 15">
+          <div class="photo-fallback"><span class="icon">🖼</span><strong>Foto familiar</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subrow reveal">
+      <div class="subrow-label">Cumpleaños infantiles</div>
+      <div class="grid3">
+        <div class="photo" style="--ar:4/5">
+          <img src="fotos/c44.JPG" alt="Familia en cumpleaños infantil">
+          <div class="photo-fallback"><span class="icon">🖼</span><strong>Foto familiar con la torta</strong></div>
+        </div>
+        <div class="photo" style="--ar:4/5">
+          <img src="fotos/c42.JPG" alt="Chicos con animador">
+          <div class="photo-fallback"><span class="icon">🖼</span><strong>Chicos con animador</strong></div>
+        </div>
+        <div class="photo" style="--ar:4/5">
+          <img src="fotos/c43.JPG" alt="Chicos jugando en fila">
+          <div class="photo-fallback"><span class="icon">🖼</span><strong>Juego grupal</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FESTIVALES ============ -->
+<section id="festivales" data-title="03 — Festivales">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="watermark">03</span>
+      <span class="num">03 — Festivales</span>
+      <h2>Danza, música y celebraciones populares</h2>
+      <p>Capturando el movimiento y la energía del momento.</p>
+    </div>
+    <div class="grid3 reveal">
+      <div class="photo" style="--ar:3/4">
+        <img src="fotos/f3.jpg" alt="Bailarina folklórica">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Danza folklórica</strong></div>
+      </div>
+      <div class="photo" style="--ar:3/4">
+        <img src="fotos/f5.jpg" alt="Bailarina de ballet en escenario">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Ballet en escenario</strong></div>
+      </div>
+      <div class="photo" style="--ar:3/4">
+        <img src="fotos/f1.jpg" alt="Coronación de reina en festival popular">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Coronación popular</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EVENTOS DEPORTIVOS ============ -->
+<section class="bg-alt" id="deportivos" data-title="04 — Deportivos">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="watermark">04</span>
+      <span class="num">04 — Eventos deportivos</span>
+      <h2>Acción y movimiento</h2>
+      <p>Cobertura de torneos, actos y competencias, con foco en la emoción de cada participante.</p>
+    </div>
+    <div class="grid3 reveal">
+      <div class="photo" style="--ar:4/5">
+        <img src="fotos/d1.jpeg" alt="Carrera de mountain bike">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Pelotón en carrera de ciclistas</strong></div>
+      </div>
+      <div class="photo" style="--ar:4/5">
+        <img src="fotos/d2.jpeg" alt="Grupo de ciclistas en carrera">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Llegada de corredores</strong></div>
+      </div>
+      <div class="photo" style="--ar:4/5">
+        <img src="fotos/d3.jpg" alt="Equipo de hockey entrenando">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Equipo de hockey</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PUENTE A PORTAFOLIO ARTÍSTICO ============ -->
+<section id="artistico" data-title="05 — Más trabajo">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="watermark">05</span>
+      <span class="num">Más trabajos</span>
+      <h2>¿Buscás algo más conceptual?</h2>
+      <p>Además de coberturas de eventos, desarrollo retratos con concepto, producciones fotográficas y proyectos personales. Los reuní en un portafolio aparte.</p>
+    </div>
+    <div class="reveal">
+      <!-- Este link asume que ambos archivos .html están en la misma carpeta al subirlos -->
+      <a href="artistico.html" class="btn btn-outline">Ver portafolio artístico →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FILMSTRIP 2 ============ -->
+<div class="filmstrip" aria-hidden="true">
+  <div class="filmstrip-track">
+    <div class="frame"><img src="fotos/c15f.jpg" alt=""></div>
+    <div class="frame"><img src="fotos/cu4f.JPG" alt=""></div>
+    <div class="frame"><img src="fotos/c4f.JPG" alt=""></div>
+    <div class="frame"><img src="fotos/f2.jpg" alt=""></div>
+    <div class="frame"><img src="fotos/d3.jpg" alt=""></div>
+    <div class="frame"><img src="fotos/c154.jpg" alt=""></div>
+    <div class="frame"><img src="fotos/c152.jpg" alt=""></div>
+    <div class="frame"><img src="fotos/c43.JPG" alt=""></div>
+  </div>
+</div>
+
+<!-- ============ CIERRE / CONTACTO ============ -->
+<section class="closing" id="contacto" data-title="06 — Contacto">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="watermark">06</span>
+      <span class="num" style="color:#D89AA6;">Hablemos</span>
+      <h2>Hablemos de tu evento</h2>
+      <p>Cada celebración es única y merece quedar bien contada. Si estás organizando un casamiento, cumpleaños o evento, escribime y armamos juntos la cobertura.</p>
+    </div>
+
+    <div class="grid-mosaic reveal">
+      <div class="photo" style="--ar:1/1">
+        <img src="fotos/f2.jpg" alt="Festival popular">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Festival</strong></div>
+      </div>
+      <div class="photo" style="--ar:1/1">
+        <img src="fotos/c4f.JPG" alt="Casamiento">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Casamiento</strong></div>
+      </div>
+      <div class="photo" style="--ar:1/1">
+        <img src="fotos/cu4f.JPG" alt="Cumpleaños">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Cumpleaños</strong></div>
+      </div>
+      <div class="photo" style="--ar:1/1">
+        <img src="fotos/c15f.jpg" alt="Evento con photo booth">
+        <div class="photo-fallback"><span class="icon">🖼</span><strong>Evento</strong></div>
+      </div>
+    </div>
+
+    <div class="contact-box reveal">
+      <div class="contact-actions">
+        <a href="https://wa.me/5492216307977?text=Hola%20Sof%C3%ADa%2C%20quiero%20consultar%20por%20una%20cobertura" target="_blank" class="btn btn-whatsapp">WhatsApp</a>
+        <a href="mailto:sofisphoto26@gmail.com?subject=Consulta%20por%20evento" class="btn btn-solid">Email</a>
+      </div>
+      <div class="contact-links">
+        <a href="https://instagram.com/sofis_photo" target="_blank">@sofis_photo — Instagram</a>
+        <a href="mailto:sofisphoto26@gmail.com">sofisphoto26@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> Sofia Sánchez · Fotógrafa de eventos
+</footer>
+
+<div class="folio" id="folio">
+  <span class="folio-line"></span>
+  <span id="folioText"><b>00</b> — Portfolio</span>
+</div>
+
+<div class="cursor-ring" id="cursorRing"><span id="cursorLabel"></span></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<div class="floating-stack">
+  <a class="floating-cta fc-whatsapp" href="https://wa.me/5492216307977?text=Hola%20Sof%C3%ADa%2C%20quiero%20consultar%20por%20una%20cobertura" target="_blank">WhatsApp</a>
+  <a class="floating-cta fc-email" href="mailto:sofisphoto26@gmail.com?subject=Consulta%20por%20evento">Email</a>
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.photo img, .frame img').forEach(img => {
+    img.addEventListener('error', () => {
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if (fallback && fallback.classList.contains('photo-fallback')) fallback.style.display = 'flex';
+    });
+  });
+
+  // ---------- Ajuste automático de orientación (horizontal / vertical) ----------
+  document.querySelectorAll('.photo img').forEach(img => {
+    function ajustarRatio(){
+      const contenedor = img.closest('.photo');
+      if (!contenedor) return;
+      const w = img.naturalWidth, h = img.naturalHeight;
+      if (!w || !h) return;
+      if (w > h * 1.15) {
+        contenedor.style.setProperty('--ar', '3/2');   // horizontal
+      } else if (h > w * 1.15) {
+        contenedor.style.setProperty('--ar', '4/5');   // vertical
+      } else {
+        contenedor.style.setProperty('--ar', '1/1');   // cuadrada
+      }
+    }
+    if (img.complete && img.naturalWidth) ajustarRatio();
+    else img.addEventListener('load', ajustarRatio);
+  });
+
+  // Duplicamos cada tira de filmstrip para que el loop sea infinito y parejo
+  document.querySelectorAll('.filmstrip-track').forEach(track => {
+    track.innerHTML += track.innerHTML;
+  });
+
+  // ---------- Cursor personalizado ----------
+  const cursorDot = document.getElementById('cursorDot');
+  const cursorRing = document.getElementById('cursorRing');
+  if (window.matchMedia('(pointer: fine)').matches) {
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursorDot.style.left = mx+'px'; cursorDot.style.top = my+'px'; });
+    function loop(){ rx += (mx-rx)*0.18; ry += (my-ry)*0.18; cursorRing.style.left = rx+'px'; cursorRing.style.top = ry+'px'; requestAnimationFrame(loop); }
+    loop();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => cursorRing.classList.add('grow'));
+      el.addEventListener('mouseleave', () => cursorRing.classList.remove('grow'));
+    });
+  }
+
+  // ---------- Parallax sutil en la foto de portada ----------
+  const heroPhoto = document.getElementById('heroPhoto');
+  if (heroPhoto && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.addEventListener('scroll', () => {
+      const y = Math.min(window.scrollY, 600) * 0.12;
+      heroPhoto.style.transform = `translateY(${y}px)`;
+    }, { passive:true });
+  }
+
+  // ---------- Folio corrido dinámico ----------
+  const folioText = document.getElementById('folioText');
+  const sections = document.querySelectorAll('section[data-title]');
+  if (folioText && sections.length) {
+    const folioObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const [num, ...rest] = entry.target.dataset.title.split(' — ');
+          folioText.innerHTML = `<b>${num}</b> — ${rest.join(' — ')}`;
+        }
+      });
+    }, { threshold: 0.5 });
+    sections.forEach(s => folioObserver.observe(s));
+  }
+</script>
+
+</body>
+</html>
